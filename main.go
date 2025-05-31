@@ -8,6 +8,7 @@ import (
 func main() {
     // create a new http.ServeMux
     mux := http.NewServeMux()
+    mux.Handle("/", http.FileServer(http.Dir(".")))
 
     // create a new http.Server struct
     // use the new "ServeMux" as the server's handler
