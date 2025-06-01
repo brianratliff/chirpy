@@ -8,7 +8,16 @@ import (
 func main() {
     // create a new http.ServeMux
     mux := http.NewServeMux()
-    mux.Handle("/", http.FileServer(http.Dir(".")))
+
+    mux.HandleFunc("/healthz", func(w http.ResponseWriter, r *http.Request) {
+        w.Header().Set("Content-Type", "text/plain; charset=utf-8")
+        w.WriteHeader(http.StatusOK)
+        w.Write([]byte("OK\n"))
+    })
+
+    // mux.Handle("/", http.FileServer(http.Dir(".")))
+    mux.Handle("/app/", http.StripPrefix("/app/", http.FileServer(http.Dir("."))))
+
 
     // create a new http.Server struct
     // use the new "ServeMux" as the server's handler
